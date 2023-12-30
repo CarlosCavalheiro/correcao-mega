@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificação da Mega-Sena</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Roboto, Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="mt-5">Verificar Jogos da Mega-Sena da Virada 2023 <br> 🤑Bolão Quero ser um Milionário💰</h1>
+
+        <div class="form-group mt-4">
+            <label for="resultInput">Informe o resultado do sorteio (separe os números por vírgula):</label>
+            <input type="text" class="form-control" id="resultInput" placeholder="Exemplo: 1,2,3,4,5,6">
+        </div>
+
+        <button class="btn btn-primary" onclick="verificarJogos()">Verificar Jogos</button>
+
+        <h2 class="mt-4">Participantes/Cota</h2>
+        <div class="form-group mt-4">
+            
+            <label class="alert alert-success">Roberta</label>
+            <label class="alert alert-success">Júlia/Gui</label>
+            <label class="alert alert-success">Rafaela</label>
+            <label class="alert alert-success">Roseli</label>
+            <label class="alert alert-success">Renata</label>
+            <label class="alert alert-success">Carlos</label>
+            <label class="alert alert-success">Chico</label>
+                                            
+        </div>
+        
+        <h2 class="mt-4">Jogos Realizados</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Jogo</th>
+                    <th scope="col">Números Jogados</th>
+                    <th scope="col">Resultado</th>
+                </tr>
+            </thead>
+            <tbody id="jogosTableBody"></tbody>
+        </table>
+
+        <h2 class="mt-4">Regra Única do Bolão</h2>
+        <div class="form-group mt-4">            
+            <label class="alert alert-warning">No caso de prêmiação: <br> o valor total será divido pelo total de cotas e depositado a cada cota de participante!</label>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function listarJogos() {
+            // Lista de jogos da Mega-Sena
+            const jogos = [
+                    [11, 17, 28, 34, 39, 44],
+                    [10, 15, 16, 49, 53, 58],
+                    [2, 8, 11, 18, 21, 37],
+                    [3, 12, 33, 39, 52, 58],
+                    [11, 13, 21, 28, 41, 55],
+                    [3, 12, 16, 23, 37, 42],
+                    [2, 17, 24, 33, 35, 48],
+                    [1, 7, 11, 14, 43, 58],
+                    [26, 27, 38, 43, 49, 53],
+                    [6, 16, 27, 30, 41, 60],
+                    [3, 16, 19, 36, 40, 57],
+                    [8, 9, 19, 23, 25, 42],
+                    [12, 22, 32, 40, 42, 49],
+                    [3, 17, 25, 36, 41, 49],
+                    [1, 6, 14, 36, 44, 60],
+                    [8, 22, 23, 41, 55, 56],
+                    [2, 19, 22, 28, 37, 59],
+                    [2, 21, 24, 38, 44, 54],
+                    [18, 24, 39, 43, 51, 58],
+                    [1, 3, 12, 36, 39, 40],
+                    [5, 14, 19, 34, 35, 58],
+                    [12, 13, 22, 36, 51, 60],
+                    [2, 7, 11, 36, 39, 53],
+                    [12, 15, 23, 32, 33, 46],
+                    [1, 4, 11, 25, 48, 54],
+                    [1, 20, 22, 30, 59, 60],
+                    [2, 3, 5, 13, 16, 25],
+                    [8, 12, 18, 28, 35, 42],
+                    [5, 7, 19, 37, 42, 47],
+                    [3, 6, 25, 27, 32, 60],
+                    [8, 9, 15, 17, 23, 56],
+                    [6, 9, 23, 28, 37, 39],
+                    [15, 34, 35, 42, 44, 53],
+                    [10, 18, 38, 40, 50, 58],
+                    [10, 14, 34, 52, 54, 57],
+                    [3, 26, 29, 35, 45, 59],
+                    [1, 6, 17, 22, 24, 25],
+                    [4, 12, 31, 39, 48, 53],
+                    [4, 11, 15, 22, 57, 59],
+                    [8, 17, 22, 26, 38, 54],
+                    [14, 32, 44, 56, 58, 60],
+                    [2, 11, 19, 44, 49, 60],
+                // Adicione os outros jogos aqui
+            ];
+
+            // Exibir jogos na tabela
+            const jogosTableBody = document.getElementById("jogosTableBody");
+            jogosTableBody.innerHTML = "";
+            for (let i = 0; i < jogos.length; i++) {
+                const jogo = jogos[i];
+                const numerosJogados = jogo.join(', ');
+                const resultado = ""; // Vamos deixar em branco por enquanto, será preenchido na correção
+                const row = `<tr><td>Jogo ${i + 1}</td><td>${numerosJogados}</td><td>${resultado}</td></tr>`;
+                jogosTableBody.innerHTML += row;
+            }
+        }
+
+        function verificarJogos() {
+            listarJogos(); // Listar os jogos antes de fazer a correção
+
+            // Obter o resultado do input e converter para um array de números
+            const resultadoInput = document.getElementById("resultInput").value;
+            const resultadoNumeros = resultadoInput.split(',').map(Number);
+
+            // Lista de jogos da Mega-Sena
+            const jogos = [
+                    [11, 17, 28, 34, 39, 44],
+                    [10, 15, 16, 49, 53, 58],
+                    [2, 8, 11, 18, 21, 37],
+                    [3, 12, 33, 39, 52, 58],
+                    [11, 13, 21, 28, 41, 55],
+                    [3, 12, 16, 23, 37, 42],
+                    [2, 17, 24, 33, 35, 48],
+                    [1, 7, 11, 14, 43, 58],
+                    [26, 27, 38, 43, 49, 53],
+                    [6, 16, 27, 30, 41, 60],
+                    [3, 16, 19, 36, 40, 57],
+                    [8, 9, 19, 23, 25, 42],
+                    [12, 22, 32, 40, 42, 49],
+                    [3, 17, 25, 36, 41, 49],
+                    [1, 6, 14, 36, 44, 60],
+                    [8, 22, 23, 41, 55, 56],
+                    [2, 19, 22, 28, 37, 59],
+                    [2, 21, 24, 38, 44, 54],
+                    [18, 24, 39, 43, 51, 58],
+                    [1, 3, 12, 36, 39, 40],
+                    [5, 14, 19, 34, 35, 58],
+                    [12, 13, 22, 36, 51, 60],
+                    [2, 7, 11, 36, 39, 53],
+                    [12, 15, 23, 32, 33, 46],
+                    [1, 4, 11, 25, 48, 54],
+                    [1, 20, 22, 30, 59, 60],
+                    [2, 3, 5, 13, 16, 25],
+                    [8, 12, 18, 28, 35, 42],
+                    [5, 7, 19, 37, 42, 47],
+                    [3, 6, 25, 27, 32, 60],
+                    [8, 9, 15, 17, 23, 56],
+                    [6, 9, 23, 28, 37, 39],
+                    [15, 34, 35, 42, 44, 53],
+                    [10, 18, 38, 40, 50, 58],
+                    [10, 14, 34, 52, 54, 57],
+                    [3, 26, 29, 35, 45, 59],
+                    [1, 6, 17, 22, 24, 25],
+                    [4, 12, 31, 39, 48, 53],
+                    [4, 11, 15, 22, 57, 59],
+                    [8, 17, 22, 26, 38, 54],
+                    [14, 32, 44, 56, 58, 60],
+                    [2, 11, 19, 44, 49, 60],
+                // Adicione os outros jogos aqui
+            ];
+
+            // Verificar cada jogo
+            let acertos = [];
+            for (let i = 0; i < jogos.length; i++) {
+                const jogo = jogos[i];
+                const acertosJogo = jogo.filter(numero => resultadoNumeros.includes(numero));
+                acertos.push(acertosJogo.length);
+
+                // Atualizar a tabela com o resultado
+                const jogosTableBody = document.getElementById("jogosTableBody");
+                const resultadoCelula = jogosTableBody.rows[i].cells[2];
+                resultadoCelula.textContent = acertosJogo.length + " acertos";
+            }
+
+            // Exibir os resultados
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = "<p>Resultados:</p>";
+            for (let i = 0; i < acertos.length; i++) {
+                resultDiv.innerHTML += `<p>Jogo ${i + 1}: ${acertos[i]} acertos</p>`;
+            }
+        }
+
+        // Chamar a função para listar os jogos inicialmente
+        listarJogos();
+    </script>
+
+</body>
+</html>
+
+            
